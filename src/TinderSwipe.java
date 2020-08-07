@@ -23,4 +23,12 @@ public class TinderSwipe {
 
         return returnList;
     }
+
+    public void submitProfileToDB(Profile profile) {
+        this.db.WritetoCSV(profile);
+    }
+
+    public void closeConnectionToDB() {
+        this.db.closeFileWriting();
+    }
 }

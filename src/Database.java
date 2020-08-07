@@ -5,8 +5,16 @@ public class Database {
     ArrayList<Profile> allProfiles = new ArrayList<Profile>();
     ArrayList<Profile> maleProfiles = new ArrayList<Profile>();
     ArrayList<Profile> femaleProfiles = new ArrayList<Profile>();
+    FileWriter csvWriter;
 
-    Database() {}
+    Database() {
+        try {
+            this.csvWriter = new FileWriter("swipes.csv");
+        }
+        catch(Exception e) {
+            System.out.println("Error: " + e.toString());
+        }
+    }
 
     public void readFromCSV(String filename) {
         BufferedReader br = null;
@@ -38,7 +46,7 @@ public class Database {
                     }
                     // System.out.println(profile);
                 }
-                
+
                 i++;
 
             }
@@ -65,6 +73,36 @@ public class Database {
     }
     public ArrayList<Profile> getFemaleProfiles() {
         return this.femaleProfiles;
+    }
+
+    public void WritetoCSV(Profile profile){
+        Person p = profile.getPerson();
+        List<List<String>> rows = Arrays.asList(
+            Arrays.asList(p.getName(), p.getAge()+"", p.getGender(), p.getLocation(), p.getBio())
+        );
+
+        try {
+            for (List<String> rowData : rows) {
+                this.csvWriter.append(String.join(",", rowData));
+                this.csvWriter.append("\n");
+            }
+        }
+        catch(Exception e) {
+            System.out.println("Error: " + e.toString());
+        }
+        
+    }
+
+    public void closeFileWriting() {
+        try {
+            this.csvWriter.flush();
+            this.csvWriter.close();
+        }
+        catch(Exception e) {
+            System.out.println("Error: " + e.toString());
+        }
+        
+        
     }
 
     public static void main(String[] args){
